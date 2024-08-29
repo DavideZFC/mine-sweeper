@@ -46,7 +46,7 @@ class MineSweeper:
         if x<0 or x>self.m-1 or y<0 or y>self.n-1:
             return False
         
-        if self.known_table[int(x), int(y)] == -10:
+        if self.hidden_table[int(x), int(y)] == -1:
             print('you lose')
             return True
         else:
@@ -64,7 +64,7 @@ class MineSweeper:
         if np.sum(self.hidden_table) == np.sum(self.known_table):
             print('you won!')
             done = True
-        return done
+        return np.copy(self.known_table), done
         
     def render(self):
         plt.imshow(self.known_table)
