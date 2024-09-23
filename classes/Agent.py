@@ -19,6 +19,7 @@ class Agent:
             find indexes of tiles which are on the boundary, which means have a known tile near them
         '''
         self.boundary_matrix = np.zeros_like(self.known_table)
+        boundary_list = []
 
         for x in range(self.m):
             for y in range(self.n):
@@ -28,9 +29,35 @@ class Agent:
                         (i,j) = n
                         if self.known_table[i,j] > 0:
                             self.boundary_matrix[x,y] = 1
+                            boundary_list.append((x,y))
                             break
+        return boundary_list
+    
+    def verify_candidates(self, cand, boundary_list):
+        '''
+        takes a sequence cand of zeros and ones, corresponding to the elements one by one of the boundary list, and verify if that sequence is feasible
+        '''
+        
 
     def compute_boundary_probas(self):
+        boundary_list = self.get_boundary()
+        candidate_sequences = []
+        for pair in boundary_list:
+            new_candidate_sequences = []
+
+            # is it possible that the current tile is a mine?
+            for cand in candidate_sequences:
+                cand.append(1)
+                if self.verify_candidates(cand, boundary_list):
+                    new_candidate_sequences.append(cand)
+            # is it possible that the current tile is not a mine?
+            for cand in candidate_sequences:
+                cand.append(0)
+                self.verify_candidates(cand)
+                if self.verify_candidates(cand):
+                    new_candidate_sequences.append(cand, boundary_list)
+
+            candidate_sequences = new_candidate_sequences
         '''
             creates all feasible boundary sequences
         '''

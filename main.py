@@ -13,3 +13,4 @@ while not done:
     env.render()
     agent.update(table)
     agent.show_boundary()
+    print(agent.get_boundary())
